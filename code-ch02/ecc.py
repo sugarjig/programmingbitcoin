@@ -172,6 +172,11 @@ class Point:
         # s=(y2-y1)/(x2-x1)
         # x3=s**2-x1-x2
         # y3=s*(x1-x3)-y1
+        if self.x != other.x:
+            s = (other.y - self.y) / (other.x - self.x)
+            x3 = s**2 - self.x - other.x
+            y3 = s * (self.x - x3) - self.y
+            return self.__class__(x3, y3, self.a, self.b)
 
         # Case 3: self == other
         # Formula (x3,y3)=(x1,y1)+(x1,y1)
