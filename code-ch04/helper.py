@@ -73,7 +73,7 @@ def int_to_little_endian(n, length):
     '''endian_to_little_endian takes an integer and returns the little-endian
     byte sequence of length'''
     # use n.to_bytes()
-    raise NotImplementedError
+    return n.to_bytes(length, 'little')
 
 
 class HelperTest(TestCase):
