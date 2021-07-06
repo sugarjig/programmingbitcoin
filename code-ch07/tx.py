@@ -192,11 +192,15 @@ class Tx:
     def verify_input(self, input_index):
         '''Returns whether the input has a valid signature'''
         # get the relevant input
+        tx_in = self.tx_ins[input_index]
         # grab the previous ScriptPubKey
+        script_pubkey = tx_in.script_pubkey(self.testnet)
         # get the signature hash (z)
+        sig_hash = self.sig_hash(input_index)
         # combine the current ScriptSig and the previous ScriptPubKey
+        combined = tx_in.script_sig + script_pubkey
         # evaluate the combined script
-        raise NotImplementedError
+        return combined.evaluate(sig_hash)
 
     # tag::source2[]
     def verify(self):
