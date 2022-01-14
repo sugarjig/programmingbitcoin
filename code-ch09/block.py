@@ -43,12 +43,18 @@ class Block:
     def serialize(self):
         '''Returns the 80 byte block header'''
         # version - 4 bytes, little endian
+        result = int_to_little_endian(self.version, 4)
         # prev_block - 32 bytes, little endian
+        result += self.prev_block[::-1]
         # merkle_root - 32 bytes, little endian
+        result += self.merkle_root[::-1]
         # timestamp - 4 bytes, little endian
+        result += int_to_little_endian(self.timestamp, 4)
         # bits - 4 bytes
+        result += self.bits
         # nonce - 4 bytes
-        raise NotImplementedError
+        result += self.nonce
+        return result
 
     def hash(self):
         '''Returns the hash256 interpreted little endian of the block'''
