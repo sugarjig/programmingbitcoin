@@ -59,9 +59,11 @@ class Block:
     def hash(self):
         '''Returns the hash256 interpreted little endian of the block'''
         # serialize
+        b = self.serialize()
         # hash256
+        h = hash256(b)
         # reverse
-        raise NotImplementedError
+        return h[::-1]
 
     def bip9(self):
         '''Returns whether this block is signaling readiness for BIP9'''
