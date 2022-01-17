@@ -97,9 +97,11 @@ class Block:
     def check_pow(self):
         '''Returns whether this block satisfies proof of work'''
         # get the hash256 of the serialization of this block
+        sha = hash256(self.serialize())
         # interpret this hash as a little-endian number
+        proof = little_endian_to_int(sha)
         # return whether this integer is less than the target
-        raise NotImplementedError
+        return proof < self.target()
 
 
 class BlockTest(TestCase):
