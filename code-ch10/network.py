@@ -149,19 +149,33 @@ class VersionMessage:
     def serialize(self):
         '''Serialize this message to send over the network'''
         # version is 4 bytes little endian
+        result = int_to_little_endian(self.version, 4)
         # services is 8 bytes little endian
+        result += int_to_little_endian(self.services, 8)
         # timestamp is 8 bytes little endian
+        result += int_to_little_endian(self.timestamp, 8)
         # receiver services is 8 bytes little endian
+        result += int_to_little_endian(self.receiver_services, 8)
         # IPV4 is 10 00 bytes and 2 ff bytes then receiver ip
+        result += 10 * b'\x00' + 2 * b'\xff' + self.receiver_ip
         # receiver port is 2 bytes, big endian
+        result += self.receiver_port.to_bytes(2, 'big')
         # sender services is 8 bytes little endian
+        result += int_to_little_endian(self.sender_services, 8)
         # IPV4 is 10 00 bytes and 2 ff bytes then sender ip
+        result += 10 * b'\x00' + 2 * b'\xff' + self.sender_ip
         # sender port is 2 bytes, big endian
+        result += self.sender_port.to_bytes(2, 'big')
         # nonce should be 8 bytes
+        result += self.nonce
         # useragent is a variable string, so varint first
+        result += encode_varint(len(self.user_agent))
+        result += self.user_agent
         # latest block is 4 bytes little endian
+        result += int_to_little_endian(self.latest_block, 4)
         # relay is 00 if false, 01 if true
-        raise NotImplementedError
+        result += b'\x00' if not self.relay else b'\x01'
+        return result
 
 
 class VersionMessageTest(TestCase):
