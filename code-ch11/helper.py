@@ -183,14 +183,22 @@ def merkle_parent_level(hashes):
     '''Takes a list of binary hashes and returns a list that's half
     the length'''
     # if the list has exactly 1 element raise an error
+    if len(hashes) == 1:
+        raise Error("must be more than 1 hashes")
     # if the list has an odd number of elements, duplicate the last one
     # and put it at the end so it has an even number of elements
+    if len(hashes) % 2 == 1:
+        hashes.append(hashes[-1])
     # initialize next level
+    parent_level = []
     # loop over every pair (use: for i in range(0, len(hashes), 2))
         # get the merkle parent of the hashes at index i and i+1
         # append parent to parent level
+    for i in range(0, len(hashes), 2):
+        parent = hash256(hashes[i] + hashes[i+1])
+        parent_level.append(parent)
     # return parent level
-    raise NotImplementedError
+    return parent_level
 
 
 def merkle_root(hashes):
