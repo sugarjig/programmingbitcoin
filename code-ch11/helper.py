@@ -205,10 +205,13 @@ def merkle_root(hashes):
     '''Takes a list of binary hashes and returns the merkle root
     '''
     # current level starts as hashes
+    current_level = hashes
     # loop until there's exactly 1 element
+    while len(current_level) > 1:
         # current level becomes the merkle parent level
+        current_level = merkle_parent_level(hashes)
     # return the 1st item of the current level
-    raise NotImplementedError
+    return current_level[0]
 
 
 def bit_field_to_bytes(bit_field):
